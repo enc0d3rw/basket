@@ -7,5 +7,11 @@ var products = [
 var Basket = require('./Basket');
 Basket.addProduct(products[0]);
 Basket.addProduct(products[0]);
+Basket.addProduct(products[0]);
+Basket.addProduct(products[0]);
 Basket.addProduct(products[1]);
+Basket.removeProduct(products[0].id);
+Basket.removeProduct(products[1].id);
+Basket.removeProduct(products[0].id);
+
 Basket.getProducts();

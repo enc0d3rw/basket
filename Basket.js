@@ -27,10 +27,11 @@ var Basket = function () {
       addProduct: function (item) {
 
         if (products.length >= 1) {
-          var index = products.map(function (current) { return current.id; }).indexOf(item.id);
+          var index = products.
+            map(function (current) { return current.id; }).
+            indexOf(item.id);
   
           if (index !== -1) {
-            products[index].price += item.price;
             products[index].quantity++;
             return;
           }
@@ -38,6 +39,23 @@ var Basket = function () {
   
         var product = new Product(item.id, item.name, item.price, 1);
         products.push(product);
+      },
+
+      // Удаляет товар из корзины
+      removeProduct: function (id) {
+        if (products.length >= 1) {
+          var index = products.
+            map(function (current) { return current.id; }).
+            indexOf(id);
+  
+          if (index !== -1) {
+            if (products[index].quantity > 1) {
+              products[index].quantity--;
+            } else if (products[index].quantity === 1) {
+              products.splice(index, 1);
+            }
+          }
+        }
       },
 
       // Метод для тестирования, выводит все продукты
