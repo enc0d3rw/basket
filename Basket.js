@@ -1,18 +1,15 @@
 var Basket = function () {
   // Данные корзины
-    var products = [
-      // {id: 0, title: 'product2', price: 2600, quantity: 2},
-      // {id: 1, title: 'product1', price: 1000, quantity: 1}
-    ];
+    var products = [];
 
     var currencies = {
-      rub: 0,
+      rub: 1,
       dol: 60,
       eur: 70
     };
 
-    var defaulCurency = 'rub';
-    var curCurency = 'rub';
+    var defaultCurrency = 'rub';
+    var curCurrency = defaultCurrency;
 
     // Функция конструктор которая создает товар
     var Product = function (id, name, price, quantity) {
@@ -25,7 +22,6 @@ var Basket = function () {
     return {
       // Метод добавляет новый товар в корзину
       addProduct: function (item) {
-
         if (products.length >= 1) {
           var index = products.
             map(function (current) { return current.id; }).
@@ -56,6 +52,40 @@ var Basket = function () {
             }
           }
         }
+      },
+
+      // Устанавливает валюту
+      // Если ничего не передать устанавливается валюта по умолчанию
+      setCurrency: function (currency) {
+        if (currency === undefined) {
+          curCurrency = defaultCurrency;
+        } else {
+          curCurrency = currency;
+        }
+      },
+
+      // Считает итоговую сумму в базовой валюте
+      getBaseTotalSum: function () {
+        var sum = 0;
+        products.forEach(function (current) {
+          sum += current.price * current.quantity;
+        });
+        
+        return sum; 
+      },
+
+      // Считает итоговую сумму (с учетом выбранной валюты)
+      getCurrencyTotalSum: function () {
+        var sum = 0;
+        if (currencies[curCurrency] !== 1) {
+          products.forEach(function (current) {
+            sum += (current.price * current.quantity) / currencies[curCurrency];
+          });
+        } else {
+          return this.getBaseTotalSum();
+        }
+        
+        return sum.toFixed(2);
       },
 
       // Метод для тестирования, выводит все продукты
