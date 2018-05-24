@@ -15,45 +15,39 @@ var Basket = function () {
     var curCurency = 'rub';
 
     // Функция конструктор которая создает товар
-    var newProduct = function (id, name, price, quantity) {
+    var Product = function (id, name, price, quantity) {
       this.id = id;
       this.name = name;
       this.price = price;
       this.quantity = quantity;
     };
 
-    // Метод добавляет новый товар в корзину
-    this.addProduct = function (item) {
+    return {
+      // Метод добавляет новый товар в корзину
+      addProduct: function (item) {
 
-      if (products.length >= 1) {
-        var ids = products.map(function (current) {
-          return current.id;
-        });
-
-        var index = ids.indexOf(item.id);
-
-        if (index !== -1) {
-          products.map(function (element) {
-            if (element.id === index) {
-              element.price += item.price;
-              element.quantity++;
-            }
-          });
-          return;
+        if (products.length >= 1) {
+          var index = products.map(function (current) { return current.id; }).indexOf(item.id);
+  
+          if (index !== -1) {
+            products[index].price += item.price;
+            products[index].quantity++;
+            return;
+          }
         }
+  
+        var product = new Product(item.id, item.name, item.price, 1);
+        products.push(product);
+      },
+
+      // Метод для тестирования, выводит все продукты
+      getProducts: function () {
+        console.log(products);
       }
-
-      var product = new newProduct(item.id, item.name, item.price, 1);
-      products.push(product);
-    };
-
-    // Метод для тестирования, выводит все продукты
-    this.getProducts = function () {
-      console.log(products);
     };
 };
 
-module.exports = Basket;
+module.exports = Basket();
 
 // 1. у него должно быть внутреннее состояние - массив товаров и например курс из трех валют: евро, доллар, рубль
 // 2. методы:
