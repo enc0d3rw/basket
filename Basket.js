@@ -39,25 +39,26 @@ var Basket = function () {
 
       // Удаляет товар из корзины
       removeProduct: function (id) {
-        if (products.length >= 1) {
-          var index = products
-            .map(function (current) { return current.id; })
-            .indexOf(id);
-  
-          if (index === -1) {
-            return;
-          }
+        if (products.length === 0) {
+          return;
+        }
 
-          if (products[index].quantity > 1) {
-            products[index].quantity--;
-          } else if (products[index].quantity === 1) {
-            products.splice(index, 1);
-          }
+        var index = products
+          .map(function (current) { return current.id; })
+          .indexOf(id);
+
+        if (index === -1) {
+          return;
+        }
+
+        if (products[index].quantity > 1) {
+          products[index].quantity--;
+        } else if (products[index].quantity === 1) {
+          products.splice(index, 1);
         }
       },
 
-      // Устанавливаем валюту
-      // Если ничего не передать устанавливается валюта по умолчанию
+      // Устанавливает валюту
       setCurrency: function (currency) {
         if (currency && currencies[currency]) {
           curCurrency = currency;
