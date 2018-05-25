@@ -5,20 +5,3 @@ var products = [
 ];
 
 var Basket = require('./Basket');
-Basket.addProduct(products[0]);
-Basket.addProduct(products[0]);
-Basket.addProduct(products[0]);
-Basket.addProduct(products[0]);
-Basket.addProduct(products[1]);
-Basket.getProducts();
-console.log('-------------------');
-
-Basket.removeProduct(products[0].id);
-Basket.removeProduct(products[0].id);
-Basket.removeProduct(products[1].id);
-Basket.getProducts();
-console.log('-------------------');
-
-console.log(Basket.getBaseTotalSum());
-Basket.setCurrency('dol');
-console.log(Basket.getCurrencyTotalSum());

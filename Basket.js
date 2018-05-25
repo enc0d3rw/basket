@@ -7,7 +7,7 @@ var Basket = function () {
       dol: 60,
       eur: 70
     };
-
+    
     var defaultCurrency = 'rub';
     var curCurrency = defaultCurrency;
 
@@ -23,9 +23,9 @@ var Basket = function () {
       // Метод добавляет новый товар в корзину
       addProduct: function (item) {
         if (products.length >= 1) {
-          var index = products.
-            map(function (current) { return current.id; }).
-            indexOf(item.id);
+          var index = products
+            .map(function (current) { return current.id; })
+            .indexOf(item.id);
   
           if (index !== -1) {
             products[index].quantity++;
@@ -40,67 +40,48 @@ var Basket = function () {
       // Удаляет товар из корзины
       removeProduct: function (id) {
         if (products.length >= 1) {
-          var index = products.
-            map(function (current) { return current.id; }).
-            indexOf(id);
+          var index = products
+            .map(function (current) { return current.id; })
+            .indexOf(id);
   
-          if (index !== -1) {
-            if (products[index].quantity > 1) {
-              products[index].quantity--;
-            } else if (products[index].quantity === 1) {
-              products.splice(index, 1);
-            }
+          if (index === -1) {
+            return;
+          }
+
+          if (products[index].quantity > 1) {
+            products[index].quantity--;
+          } else if (products[index].quantity === 1) {
+            products.splice(index, 1);
           }
         }
       },
 
-      // Устанавливает валюту
+      // Устанавливаем валюту
       // Если ничего не передать устанавливается валюта по умолчанию
       setCurrency: function (currency) {
-        if (currency === undefined) {
-          curCurrency = defaultCurrency;
-        } else {
+        if (currency && currencies[currency]) {
           curCurrency = currency;
         }
       },
 
       // Считает итоговую сумму в базовой валюте
       getBaseTotalSum: function () {
-        var sum = 0;
-        products.forEach(function (current) {
-          sum += current.price * current.quantity;
-        });
+        var total = products.reduce(function (sum, elem) {
+          return sum + elem.price * elem.quantity;
+        }, 0);
         
-        return sum; 
+        return total; 
       },
 
       // Считает итоговую сумму (с учетом выбранной валюты)
       getCurrencyTotalSum: function () {
-        var sum = 0;
-        if (currencies[curCurrency] !== 1) {
-          products.forEach(function (current) {
-            sum += (current.price * current.quantity) / currencies[curCurrency];
-          });
-        } else {
-          return this.getBaseTotalSum();
-        }
+        var total = products.reduce(function (sum, elem) {
+          return sum + (elem.price * elem.quantity) / currencies[curCurrency];
+        }, 0);
         
-        return sum.toFixed(2);
-      },
-
-      // Метод для тестирования, выводит все продукты
-      getProducts: function () {
-        console.log(products);
+        return total.toFixed(2);
       }
     };
 };
 
 module.exports = Basket();
-
-// 1. у него должно быть внутреннее состояние - массив товаров и например курс из трех валют: евро, доллар, рубль
-// 2. методы:
-// - задать валюту
-// - посчитать итоговую сумму в базовой валюте
-// - посчитать итоговую сумму (с учетом выбранной валюты)
-// - добавить товар (если добавляются одинаковые товары, то "схлопывать" их в один)
-// - удалить товар (если товаров несколько - менять количество штук в схлопнутом товаре, иначе удалять из массива)
